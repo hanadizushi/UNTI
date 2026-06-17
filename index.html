@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNTI診断</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      background: #fff8e7;
+      color: #2b1d0e;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .question-count {
+      font-weight: bold;
+      opacity: 0.75;
+    }
+
+    .question {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option-wrap {
+      position: relative;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #f1d28a;
+      color: #2b1d0e;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #e4bd63;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .selected {
+      background: #8b5e34;
+      color: white;
+    }
+
+    .nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .nav button {
+      flex: 1;
+    }
+
+    .loop-message {
+      background: #2b1d0e;
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .result-label {
+      text-align: center;
+      font-weight: bold;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+
+    .result-main {
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      background: #f1d28a;
+      padding: 20px;
+      border-radius: 12px;
+      line-height: 1.5;
+    }
+
+    .reason-title {
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+
+    .reason {
+      line-height: 1.9;
+      font-size: 16px;
+      white-space: pre-line;
+    }
+
+    .sage {
+      background: #2b1d0e;
+      color: white;
+    }
+
+    .restart,
+    .share {
+      margin-top: 16px;
+      width: 100%;
+    }
+
+    .share {
+      background: #111;
+      color: white;
+    }
+
+    .cracked-neutral {
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .cracked-neutral span {
+      position: relative;
+      z-index: 4;
+    }
+.cracked-neutral span {
+  opacity: 0;
+  pointer-events: none;
+}
+.golden-poop {
+  z-index: 20;
+}
+.cracked-neutral {
+  pointer-events: none;
+}
+
+.golden-poop {
+  pointer-events: auto;
+}
+
+.golden-poop img {
+  width: 44px;
+  pointer-events: auto;
+}
+
+    .cracked-neutral::before,
+    .cracked-neutral::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: #f1d28a;
+      transition: transform 0.4s ease;
+      z-index: 2;
+    }
+
+    .cracked-neutral::before {
+      left: 0;
+    }
+
+    .cracked-neutral::after {
+      right: 0;
+    }
+
+    .cracked-neutral:hover::before,
+    .cracked-neutral:hover::after {
+      background: #e4bd63;
+    }
+
+    .crack-level-1::before { transform: translateX(-3px); }
+    .crack-level-1::after { transform: translateX(3px); }
+
+    .crack-level-2::before { transform: translateX(-12px); }
+    .crack-level-2::after { transform: translateX(12px); }
+
+    .crack-level-3::before { transform: translateX(-28px); }
+    .crack-level-3::after { transform: translateX(28px); }
+
+    .crack-level-4::before { transform: translateX(-58px); }
+    .crack-level-4::after { transform: translateX(58px); }
+
+.golden-poop {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.golden-poop img {
+  width: 38px;
+  height: auto;
+  display: block;
+  filter: none;
+}
+
+.result-golden-poop {
+  display: block;
+  width: 350px;
+  max-width: 80%;
+  height: auto;
+  margin: 0 auto 20px;
+}    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .question {
+        font-size: 18px;
+      }
+
+      .result-main {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>UNTI診断</h1>
+    <div id="app" class="card"></div>
+  </div>
+
+  <script>
+    const baseQuestions = [
+      { text: "料理は見た目が悪くても美味しければ満足できる。", axis: "U", direction: 1 },
+      { text: "味が普通でも見た目が綺麗な料理に魅力を感じる。", axis: "U", direction: -1 },
+      { text: "味の良さが保証されているなら、見た目の悪さはある程度許せる。", axis: "U", direction: 1 },
+      { text: "食べる前に『見た目で無理』と思うことが多い。", axis: "U", direction: -1 },
+      { text: "結局、食べ物は口に入れた後の体験が一番大事だと思う。", axis: "U", direction: 1 },
+      { text: "見た目が不快なものは、どれだけ美味しいと言われても抵抗がある。", axis: "U", direction: -1 },
+
+      { text: "人気がなくても、自分が良いと思ったものは良いと言える。", axis: "N", direction: 1 },
+      { text: "世間で高評価のものは、一度は試す価値があると思う。", axis: "N", direction: -1 },
+      { text: "有名ブランドより、実際の性能や中身を重視する。", axis: "N", direction: 1 },
+      { text: "周囲からどう見られるかを考えて選ぶことがある。", axis: "N", direction: -1 },
+      { text: "多数派の意見より、自分の判断を信じる方だ。", axis: "N", direction: 1 },
+      { text: "みんなが評価していると、自分も少し気になってしまう。", axis: "N", direction: -1 },
+
+      { text: "最終的には、自分が納得できるかどうかで決めたい。", axis: "I", direction: 1 },
+      { text: "他人に引かれそうな選択は、できれば避けたい。", axis: "I", direction: -1 },
+      { text: "人と違う選択でも、自分が正しいと思えば選べる。", axis: "I", direction: 1 },
+      { text: "場の空気に合わせて選ぶことが多い。", axis: "I", direction: -1 },
+      { text: "理解されなくても、自分の基準を大切にしたい。", axis: "I", direction: 1 },
+      { text: "周りの反応が悪そうだと、選択を変えたくなる。", axis: "I", direction: -1 },
+
+      { text: "多少の不快感があっても、得るものが大きければ挑戦する。", axis: "C", direction: 1 },
+      { text: "少しでも生理的に無理だと感じると避けたくなる。", axis: "C", direction: -1 },
+      { text: "結果が良ければ、途中の気持ち悪さはある程度我慢できる。", axis: "C", direction: 1 },
+      { text: "気持ち悪さや不潔感にはかなり敏感な方だ。", axis: "C", direction: -1 },
+      { text: "理屈で納得できれば、抵抗感は乗り越えられる。", axis: "C", direction: 1 },
+      { text: "どれだけ合理的でも、嫌なものは嫌だ。", axis: "C", direction: -1 }
+    ];
+
+    const hiddenQuestion = {
+      text: "カレー味にしたら全部旨い。",
+      hidden: true
+    };
+
+    const finalBalanceQuestion = {
+      text: "うんち味のカレーかカレー味のうんち。食べるならどっち？",
+      balance: true
+    };
+
+    const normalOptionLabels = [
+      "1：全くそう思わない",
+      "2：あまりそう思わない",
+      "3：どちらでもない",
+      "4：ややそう思う",
+      "5：とてもそう思う"
+    ];
+
+    const balanceOptionLabels = [
+      "1：うんち味のカレー",
+      "2：うんち味のカレー",
+      "3：うんち味のカレー",
+      "4：カレー味のうんち",
+      "5：カレー味のうんち"
+    ];
+
+    const typeReasons = {
+      UNIC: {
+        food: "うんち味のカレー",
+        reason:
+`あなたは、見た目や世間体よりも「中身がどうか」を重視します。
+
+さらに、自分の判断を信じる力が強く、多少の抵抗感があっても理屈で突破できます。
+
+そのため、たとえ見た目や名前に問題があっても、
+「結局これはカレーである」
+という一点を信じて、うんち味のカレーを選びます。`
+      },
+      UNIR: {
+        food: "うんち味のカレー",
+        reason:
+`あなたは本質を重視しますが、最後の一歩では慎重になります。
+
+それでも、本物のうんちを食べるよりは、
+「味が最悪なカレー」の方がまだ構造として安全だと判断します。
+
+嫌悪感はあります。
+しかし、あなたの理性はうんち味のカレーを選びます。`
+      },
+      UNSC: {
+        food: "うんち味のカレー",
+        reason:
+`あなたは自分の判断だけでなく、周囲の評価も材料にします。
+
+そのうえで「これは一応カレーである」という事実を重視します。
+
+多少気持ち悪くても、説明可能な選択を取りたいタイプなので、
+最終的にうんち味のカレーを選びます。`
+      },
+      UNSR: {
+        food: "うんち味のカレー",
+        reason:
+`あなたは慎重で、できればどちらも避けたい人です。
+
+ただし、選ばなければならないなら、
+「本物のうんちではない」という一点が決め手になります。
+
+あなたは食欲ではなく、リスク管理としてうんち味のカレーを選びます。`
+      },
+      UTIC: {
+        food: "うんち味のカレー",
+        reason:
+`あなたは感覚派でありながら、自分の判断を強く信じます。
+
+普通なら避ける選択でも、
+「自分がいけると思ったらいける」
+という勢いがあります。
+
+見た目に抵抗があっても、最終的には挑戦心が勝ち、
+うんち味のカレーを選びます。`
+      },
+      UTIR: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは感覚に正直です。
+
+理屈では「カレーの方が安全」と分かっていても、
+見た目や印象の気持ち悪さを無視できません。
+
+そのため、あなたは味や本質よりも、
+目の前で耐えられるかどうかを優先し、
+カレー味のうんちを選びます。`
+      },
+      UTSC: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは場の空気や話題性に影響されやすいタイプです。
+
+目の前のインパクト、見た目、周囲の反応。
+そういったものが判断に強く入り込みます。
+
+結果として、あなたは「カレーっぽく見える方」に流れ、
+カレー味のうんちを選びます。`
+      },
+      UTSR: {
+        food: "カレー味のうんち",
+        reason:
+`あなたはかなり常識的です。
+
+不快なもの、周囲に引かれそうなもの、見た目で無理なものを避けます。
+
+その結果、実態よりも「その場で耐えられる見た目」を優先し、
+カレー味のうんちを選びます。`
+      },
+      CNIC: {
+        food: "うんち味のカレー",
+        reason:
+`あなたは見た目を気にしつつも、本質を見抜こうとします。
+
+最初は迷います。
+しかし最終的には「これはうんちに見えるだけのカレーだ」と判断します。
+
+あなたは目に惑わされながらも、最後は中身を信じて
+うんち味のカレーを選びます。`
+      },
+      CNIR: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは本質を見たい人ですが、とても慎重です。
+
+考えれば考えるほど、どちらにも危険を感じます。
+その中で最後に残るのは、目の前の抵抗感です。
+
+あなたは理屈では迷いながらも、実際に口へ運ぶ瞬間の負担を避け、
+カレー味のうんちを選びます。`
+      },
+      CNSC: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは情報を集めて判断する現実派です。
+
+自分の感覚だけでなく、周囲の反応や安全そうに見える雰囲気も重視します。
+
+その結果、あなたは「見た目がカレーであること」を大きく評価し、
+カレー味のうんちを選びます。`
+      },
+      CNSR: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは安全確認を怠らないタイプです。
+
+本当はどちらも選びたくありません。
+しかし、どうしても選ぶなら、その場で一番抵抗が少ないものを選びます。
+
+あなたは嫌悪感を最小化するため、
+カレー味のうんちを選びます。`
+      },
+      CTIC: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは見た目と自分の直感を重視します。
+
+たとえ中身に問題があっても、
+目の前で「カレーに見える」ことはかなり大きい要素です。
+
+あなたは勢いと視覚情報を信じて、
+カレー味のうんちを選びます。`
+      },
+      CTIR: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは美意識と嫌悪感に正直です。
+
+見た目で無理なものを、理屈だけで突破するのは難しいタイプです。
+
+そのため、あなたは中身の問題よりも、
+まず目の前で受け入れられるかを優先し、
+カレー味のうんちを選びます。`
+      },
+      CTSC: {
+        food: "カレー味のうんち",
+        reason:
+`あなたは見た目、空気、話題性に強く反応します。
+
+みんなが盛り上がっているもの、
+ぱっと見で受け入れやすいものに流れやすいところがあります。
+
+あなたはその場のノリで、
+カレー味のうんちを選びます。`
+      },
+      CTSR: {
+        food: "カレー味のうんち",
+        reason:
+`あなたはもっとも「食べたくない」という感覚に忠実です。
+
+どちらも嫌ですが、
+うんちに見えるものを食べることだけは避けたい。
+
+あなたは消去法で、
+カレー味のうんちを選びます。`
+      }
+    };
+
+    let questions = [];
+    let answers = [];
+    let current = 0;
+    let totalQuestionNumber = 1;
+    let loopCount = 0;
+    let goldenPoopLevel = 0;
+
+    const app = document.getElementById("app");
+
+    function buildQuestions() {
+      questions = [...baseQuestions];
+
+      // 約25%の確率で、通常質問のどれか1問を隠れ質問に入れ替える
+      if (Math.random() < 0.25) {
+        const index = Math.floor(Math.random() * questions.length);
+        questions[index] = hiddenQuestion;
+      }
+
+      answers = Array(questions.length).fill(null);
+    }
+
+    function renderQuestion(message = "") {
+      const q = questions[current];
+      const optionLabels = q.balance ? balanceOptionLabels : normalOptionLabels;
+
+      app.innerHTML = `
+        ${message}
+        <div class="question-count">質問 ${totalQuestionNumber}</div>
+        <div class="question">${q.text}</div>
+
+        <div class="options">
+          ${optionLabels.map((label, i) => {
+            const value = i + 1;
+            const isNeutral = value === 3;
+            const showGoldenPoop =
+              loopCount >= 10 &&
+              current === 0 &&
+              isNeutral &&
+              goldenPoopLevel > 0 &&
+              !q.balance &&
+              !q.hidden;
+
+            const crackClass = showGoldenPoop
+              ? `cracked-neutral crack-level-${Math.min(goldenPoopLevel, 4)}`
+              : "";
+
+            return `
+              <div class="option-wrap">
+                ${showGoldenPoop && goldenPoopLevel >= 4 ? `
+                  <div class="golden-poop" onclick="showGoldenPoopResult()">
+  <img src="golden-poop.png" alt="金のうんち">
+</div>
+                ` : ""}
+
+                <button class="${answers[current] === value ? "selected" : ""} ${crackClass}" onclick="selectAnswer(${value})">
+                  <span>${label}</span>
+                </button>
+              </div>
+            `;
+          }).join("")}
+        </div>
+
+        <div class="nav">
+          <button onclick="prevQuestion()" ${current === 0 ? "disabled" : ""}>戻る</button>
+          <button onclick="nextQuestion()">
+            ${current === questions.length - 1 ? "結果を見る" : "次へ"}
+          </button>
+        </div>
+      `;
+    }
+
+    function selectAnswer(value) {
+      answers[current] = value;
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      const q = questions[current];
+
+      // 均衡後の追加質問だけ、未選択で次へを押すと賢者
+      if (q.balance && answers[current] === null) {
+        renderSage();
+        return;
+      }
+
+      if (answers[current] === null) {
+        alert("回答を選んでください。");
+        return;
+      }
+
+      if (current < questions.length - 1) {
+        current++;
+        totalQuestionNumber++;
+        renderQuestion();
+      } else {
+        finishDiagnosis();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        // 10ループ後、質問2から質問1へ戻るたびに「どちらでもない」が割れていく
+        if (loopCount >= 10 && current === 1) {
+          goldenPoopLevel++;
+        }
+
+        current--;
+        totalQuestionNumber--;
+        renderQuestion();
+      }
+    }
+
+    function getNormalAnswers() {
+      return questions
+        .map((q, i) => q.axis ? answers[i] : null)
+        .filter(v => v !== null);
+    }
+
+    function calculateScores() {
+      const scores = { U: 0, N: 0, I: 0, C: 0 };
+
+      questions.forEach((q, i) => {
+        if (!q.axis) return;
+        const value = answers[i] - 3;
+        scores[q.axis] += value * q.direction;
+      });
+
+      return scores;
+    }
+
+    function hasHiddenForceCurryPoop() {
+      return questions.some((q, i) => q.hidden && answers[i] >= 4);
+    }
+
+    function finishDiagnosis() {
+      const normalAnswers = getNormalAnswers();
+      const allNeutral = normalAnswers.every(a => a === 3);
+      const allSameNumber = normalAnswers.every(a => a === normalAnswers[0]);
+
+      if (allNeutral) {
+        loopCount++;
+        current = 0;
+        totalQuestionNumber++;
+        buildQuestions();
+
+        renderQuestion(`
+          <div class="loop-message">
+            すべて「どちらでもない」でした。<br>
+            診断はまだあなたを判定できません。<br>
+            もう一度、質問に答えてください。<br>
+            ループ回数：${loopCount}
+          </div>
+        `);
+        return;
+      }
+
+      if (hasHiddenForceCurryPoop()) {
+        showForcedCurryPoop();
+        return;
+      }
+
+      const scores = calculateScores();
+
+      const allScoresZero =
+        scores.U === 0 &&
+        scores.N === 0 &&
+        scores.I === 0 &&
+        scores.C === 0;
+
+      // 全部同じ数字の場合は、スコアが0でも賢者ルートに入れない
+      if (allScoresZero && !allSameNumber) {
+        showBalanceQuestion();
+        return;
+      }
+
+      showResult(scores);
+    }
+
+    function showBalanceQuestion() {
+      questions.push(finalBalanceQuestion);
+      answers.push(null);
+      current = questions.length - 1;
+      totalQuestionNumber++;
+      renderQuestion();
+    }
+
+    function showResult(scores) {
+      const firstLetter = scores.U >= 0 ? "U" : "C";
+      const secondLetter = scores.N >= 0 ? "N" : "T";
+      const thirdLetter = scores.I >= 0 ? "I" : "S";
+      const fourthLetter = scores.C >= 0 ? "C" : "R";
+
+      const typeCode = firstLetter + secondLetter + thirdLetter + fourthLetter;
+      const result = typeReasons[typeCode];
+
+      renderFoodResult(result.food, result.reason);
+    }
+
+    function renderFoodResult(food, reason) {
+      app.innerHTML = `
+        <div class="result-label">UNTI診断結果</div>
+
+        <div class="result-main">
+          あなたは<br>
+          「${food}」<br>
+          を食べます。
+        </div>
+
+        <div class="reason-title">＜理由＞</div>
+        <div class="reason">${reason}</div>
+
+        <button class="restart" onclick="restart()">もう一度診断する</button>
+        <button class="share" onclick="shareResult('${food}')">Xで共有する</button>
+      `;
+    }
+
+    function showForcedCurryPoop() {
+      renderFoodResult(
+        "カレー味のうんち",
+`カレー味が好きだから。`
+      );
+    }
+
+    function renderSage() {
+      app.innerHTML = `
+        <div class="result-label">UNTI診断結果</div>
+
+        <div class="result-main sage">
+          あなたは賢者です。
+        </div>
+
+        <div class="reason-title">＜理由＞</div>
+        <div class="reason">
+あなたは選択を放棄したのではありません。
+
+選択という制度が成立する以前の、未分化なカレー性とうんち性の境界面に立っています。
+
+通常、人は味覚・視覚・本質・社会的承認を別々の軸として処理します。
+
+しかしあなたの場合、それらは判断材料ではなく、互いを打ち消し合う観測ノイズとして機能しました。
+
+うんち味のカレーは、まだカレーなのか。
+カレー味のうんちは、すでにカレーなのか。
+
+この問いは食品衛生の問題ではありません。
+存在論的な皿の問題です。
+
+あなたは食べる者ではなく、
+食べるという概念が発生する直前の静かな皿です。
+        </div>
+
+        <button class="restart" onclick="restart()">もう一度診断する</button>
+        <button class="share" onclick="shareSage()">Xで共有する</button>
+      `;
+    }
+
+    function showGoldenPoopResult() {
+      app.innerHTML = `
+        <div class="result-label">UNTI診断結果</div>
+
+        <div class="result-main sage">
+          あなたは金のうんちを見つけました。
+        </div>
+<img class="result-golden-poop" src="golden-poop.png" alt="金のうんち">
+        <div class="reason-title"></div>
+        <div class="reason">
+
+        </div>
+
+        <button class="restart" onclick="restart()">もう一度診断する</button>
+      `;
+    }
+
+    function restart() {
+      current = 0;
+      totalQuestionNumber = 1;
+      loopCount = 0;
+      goldenPoopLevel = 0;
+      buildQuestions();
+      renderQuestion();
+    }
+
+    function shareResult(food) {
+      const text = `私はUNTI診断で「${food}」を食べる人でした。\n#UNTI診断`;
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
+    }
+
+    function shareSage() {
+      const text = `私はUNTI診断で「賢者」でした。\n#UNTI診断`;
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
+    }
+
+    buildQuestions();
+    renderQuestion();
+  </script>
+</body>
+</html>
