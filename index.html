@@ -103,16 +103,16 @@
       margin-bottom: 8px;
     }
 
-    .result-main {
-      font-size: 30px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 20px;
-      background: #f1d28a;
-      padding: 20px;
-      border-radius: 12px;
-      line-height: 1.5;
-    }
+.result-main {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  background: #f1d28a;
+  padding: 20px;
+  border-radius: 12px;
+  line-height: 1.6;
+}
 
     .reason-title {
       font-weight: bold;
@@ -121,11 +121,11 @@
       margin-bottom: 8px;
     }
 
-    .reason {
-      line-height: 1.9;
-      font-size: 16px;
-      white-space: pre-line;
-    }
+.reason {
+  line-height: 1.75;
+  font-size: 16px;
+  white-space: pre-line;
+}
 
     .sage {
       background: #2b1d0e;
@@ -695,23 +695,23 @@
       renderFoodResult(result.food, result.reason);
     }
 
-    function renderFoodResult(food, reason) {
-      app.innerHTML = `
-        <div class="result-label">UNTI診断結果</div>
+   function renderFoodResult(food, reason) {
+  app.innerHTML = `
+    <div class="result-label">UNTI診断結果</div>
 
-        <div class="result-main">
-          あなたは<br>
-          「${food}」<br>
-          を食べます。
-        </div>
+    <div class="result-main">
+      <div>あなたは</div>
+      <div>「${food}」</div>
+      <div>を食べます。</div>
+    </div>
 
-        <div class="reason-title">＜理由＞</div>
-        <div class="reason">${reason}</div>
+    <div class="reason-title">＜理由＞</div>
+    <div class="reason">${reason.trim()}</div>
 
-        <button class="restart" onclick="restart()">もう一度診断する</button>
-        <button class="share" onclick="shareResult('${food}')">Xで共有する</button>
-      `;
-    }
+    <button class="restart" onclick="restart()">もう一度診断する</button>
+    <button class="share" onclick="shareResult('${food}')">Xで共有する</button>
+  `;
+}
 
     function showForcedCurryPoop() {
       renderFoodResult(
