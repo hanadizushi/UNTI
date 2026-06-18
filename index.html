@@ -276,6 +276,7 @@ font-size: clamp(32px, 8vw, 48px);
   </style>
 </head>
 <body>
+//うんち
   <div class="container">
   <h1 id="siteTitle">UNTI診断</h1>
     <div id="app" class="card"></div>
@@ -357,9 +358,10 @@ font-size: clamp(32px, 8vw, 48px);
 
 それでも、本物のうんちを食べるよりは、味が最悪なカレーの方がまだ構造として安全だと判断します。
 
-嫌悪感はあります。
+嫌悪感はあります。しかし最後は理性を優先し、
 
-しかし、あなたの理性はうんち味のカレーを食べます。`
+
+うんち味のカレーを食べます。`
       },
       UNSC: {
         food: "うんち味のカレー",
@@ -558,7 +560,7 @@ font-size: clamp(32px, 8vw, 48px);
             const value = i + 1;
             const isNeutral = value === 3;
             const showGoldenPoop =
-              loopCount >= 1 &&
+              loopCount >= 10 &&
               current === 0 &&
               isNeutral &&
               goldenPoopLevel > 0 &&
@@ -625,7 +627,7 @@ font-size: clamp(32px, 8vw, 48px);
     function prevQuestion() {
       if (current > 0) {
         // 10ループ後、質問2から質問1へ戻るたびに「どちらでもない」が割れていく
-        if (loopCount >= 1 && current === 1) {
+        if (loopCount >= 10 && current === 1) {
           goldenPoopLevel++;
         }
 
@@ -859,6 +861,7 @@ function shareGoldenPoop() {
 }
     buildQuestions();
     renderQuestion();
+//うんち
   </script>
 </body>
 </html>
