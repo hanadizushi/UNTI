@@ -605,6 +605,7 @@ font-size: clamp(32px, 8vw, 48px);
       const q = questions[current];
 
       // 均衡後の追加質問だけ、未選択で次へを押すと賢者
+      // 毎朝快便
       if (q.balance && answers[current] === null) {
         renderSage();
         return;
