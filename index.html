@@ -104,16 +104,25 @@
     }
 
 .result-main {
-  font-size: 30px;
-  font-weight: bold;
   text-align: center;
-  margin-bottom: 20px;
+  font-weight: bold;
   background: #f1d28a;
   padding: 20px;
   border-radius: 12px;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
+.result-prefix,
+.result-suffix {
+  font-size: clamp(16px, 4.5vw, 32px);
+}
+
+.food-result {
+  font-size: clamp(24px, 7vw, 42px);
+  margin: 12px 0;
+  white-space: nowrap;
+  line-height: 1.3;
+}
    .reason-title {
   font-weight: bold;
   font-size: 20px;
@@ -123,12 +132,12 @@
 }
 
 .reason {
-  line-height: 1.75;
+  line-height: 1.8;
   font-size: 16px;
   white-space: pre-line;
 }
-
     .sage {
+font-size: clamp(32px, 8vw, 48px);
       background: #2b1d0e;
       color: white;
     }
@@ -241,26 +250,34 @@
 
     @media (max-width: 600px) {
       .container {
-        padding: 16px;
-      }
+    padding: 12px;
+  }
 
-      h1 {
-        font-size: 26px;
-      }
+  h1 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
 
       .question {
         font-size: 18px;
       }
 
-      .result-main {
-        font-size: 24px;
-      }
+     .result-main {
+  text-align: center;
+  font-weight: bold;
+  background: #f1d28a;
+  padding: 20px;
+  border-radius: 12px;
+  line-height: 1.4;
+}
+  
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>UNTI診断</h1>
+  <h1 id="siteTitle">UNTI診断</h1>
     <div id="app" class="card"></div>
   </div>
 
@@ -326,139 +343,183 @@
         food: "カレー味のうんち",
         reason:
 `あなたは、見た目や世間体よりも「中身がどうか」を重視します。
+
 さらに、自分の判断を信じる力が強く、多少の抵抗感があっても理屈で突破できます。
+
 そのため、たとえ見た目や名前に問題があっても、「結局これはカレーである」という一点を信じて、
-カレー味のうんちを選びます。`
+
+カレー味のうんちを食べます。`
       },
       UNIR: {
         food: "うんち味のカレー",
         reason:
 `あなたは本質を重視しますが、最後の一歩では慎重になります。
+
 それでも、本物のうんちを食べるよりは、味が最悪なカレーの方がまだ構造として安全だと判断します。
+
 嫌悪感はあります。
-しかし、あなたの理性はうんち味のカレーを選びます。`
+
+しかし、あなたの理性はうんち味のカレーを食べます。`
       },
       UNSC: {
         food: "うんち味のカレー",
         reason:
 `あなたは自分の判断だけでなく、周囲の評価も材料にします。
+
 そのうえで「これは一応カレーである」という事実を重視します。
+
 多少気持ち悪くても、説明可能な選択を取りたいタイプなので、
-最終的にうんち味のカレーを選びます。`
+
+最終的にうんち味のカレーを食べます。`
       },
       UNSR: {
         food: "うんち味のカレー",
         reason:
 `あなたは慎重で、できればどちらも避けたい人です。
+
 ただし、選ばなければならないなら、
+
 「本物のうんちではない」という一点が決め手になります。
-あなたは食欲ではなく、リスク管理としてうんち味のカレーを選びます。`
+
+あなたは食欲ではなく、
+
+リスク管理としてうんち味のカレーを食べます。`
       },
       UTIC: {
         food: "カレー味のうんち",
         reason:
 `あなたは感覚派でありながら、自分の判断を強く信じます。
-普通なら避ける選択でも、
-「自分がいけると思ったらいける」という勢いがあります。
+
+普通なら避ける選択でも、「自分がいけると思ったらいける」という勢いがあります。
+
 見た目に抵抗があっても、最終的には挑戦心が勝ち、
-カレー味のうんちを選びます。`
+
+カレー味のうんちを食べます。`
       },
       UTIR: {
         food: "うんち味のカレー",
         reason:
 `あなたは感覚に正直です。
-理屈では「カレーの方が安全」と分かっていても、
-見た目や印象の気持ち悪さを無視できません。
+
+理屈では「カレーの方が安全」と分かっていても、見た目や印象の気持ち悪さを無視できません。
+
 そのため、あなたは味や本質よりも、目の前で耐えられるかどうかを優先し、
-うんち味のカレーを選びます。`
+
+うんち味のカレーを食べます。`
       },
       UTSC: {
         food: "うんち味のカレー",
         reason:
 `あなたは場の空気や話題性に影響されやすいタイプです。
-目の前のインパクト、見た目、周囲の反応。
-そういったものが判断に強く入り込みます。
+
+目の前のインパクト、見た目、周囲の反応。そういったものが判断に強く入り込みます。
+
 結果として、あなたは「カレーっぽく見える方」に流れ、
-うんち味のカレーを選びます。`
+
+うんち味のカレーを食べます。`
       },
       UTSR: {
         food: "うんち味のカレー",
         reason:
 `あなたはかなり常識的です。
+
 不快なもの、周囲に引かれそうなもの、見た目で無理なものを避けます。
+
 その結果、実態よりも「その場で耐えられる見た目」を優先し、
-うんち味のカレーを選びます。`
+
+うんち味のカレーを食べます。`
       },
       CNIC: {
         food: "カレー味のうんち",
         reason:
 `あなたは見た目を気にしつつも、本質を見抜こうとします。
-最初は迷います。
-しかし最終的には「これはうんちに見えるだけのカレーだ」と判断します。
-あなたは目に惑わされながらも、最後は中身を信じて
-カレー味のうんちを選びます。`
+
+最初は迷います。しかし最終的には「これはうんちに見えるだけのカレーだ」と判断します。
+
+あなたは目に惑わされながらも、最後は中身を信じて、
+
+カレー味のうんちを食べます。`
       },
       CNIR: {
         food: "カレー味のうんち",
         reason:
 `あなたは本質を見たい人ですが、とても慎重です。
+
 考えれば考えるほど、どちらにも危険を感じます。
+
 その中で最後に残るのは、目の前の抵抗感です。
+
 あなたは理屈では迷いながらも、実際に口へ運ぶ瞬間の負担を避け、
-カレー味のうんちを選びます。`
+
+カレー味のうんちを食べます。`
       },
       CNSC: {
         food: "うんち味のカレー",
         reason:
 `あなたは情報を集めて判断する現実派です。
+
 自分の感覚だけでなく、周囲の反応や安全そうに見える雰囲気も重視します。
+
 その結果、あなたは「見た目がカレーであること」を大きく評価し、
-うんち味のカレーを選びます。`
+
+うんち味のカレーを食べます。`
       },
       CNSR: {
         food: "うんち味のカレー",
         reason:
 `あなたは安全確認を怠らないタイプです。
+
 本当はどちらも選びたくありません。
+
 しかし、どうしても選ぶなら、その場で一番抵抗が少ないものを選びます。
+
 あなたは嫌悪感を最小化するため、
-うんち味のカレーを選びます。`
+
+うんち味のカレーを食べます。`
       },
       CTIC: {
         food: "うんち味のカレー",
         reason:
 `あなたは見た目と自分の直感を重視します。
-たとえ中身に問題があっても、
-目の前で「カレーに見える」ことはかなり大きい要素です。
+
+たとえ中身に問題があっても、目の前で「カレーに見える」ことはかなり大きい要素です。
+
 あなたは勢いと視覚情報を信じて、
-うんち味のカレーを選びます。`
+
+うんち味のカレーを食べます。`
       },
       CTIR: {
         food: "うんち味のカレー",
         reason:
 `あなたは美意識と嫌悪感に正直です。
+
 見た目で無理なものを、理屈だけで突破するのは難しいタイプです。
-そのため、あなたは中身の問題よりも、
-まず目の前で受け入れられるかを優先し、
-うんち味のカレーを選びます。`
+
+そのため、あなたは中身の問題よりも、まず目の前で受け入れられるかを優先し、
+
+うんち味のカレーを食べます。`
       },
       CTSC: {
         food: "カレー味のうんち",
         reason:
 `あなたは見た目、空気、話題性に強く反応します。
-みんなが盛り上がっているもの、
-ぱっと見で受け入れやすいものに流れやすいところがあります。
+
+みんなが盛り上がっているもの、ぱっと見で受け入れやすいものに流れやすいところがあります。
+
 あなたはその場のノリで、
-カレー味のうんちを選びます。`
+
+カレー味のうんちを食べます。`
       },
       CTSR: {
         food: "うんち味のカレー",
         reason:
 `あなたはもっとも「食べたくない」という感覚に忠実です。
-どちらも嫌ですが、
-うんちに見えるものを食べることだけは避けたい。
+
+どちらも嫌ですが、うんちに見えるものを食べることだけは避けたい。
+
 あなたは消去法で、
-うんち味のカレーを選びます。`
+
+うんち味のカレーを食べます。`
       }
     };
 
@@ -497,7 +558,7 @@
             const value = i + 1;
             const isNeutral = value === 3;
             const showGoldenPoop =
-              loopCount >= 10 &&
+              loopCount >= 1 &&
               current === 0 &&
               isNeutral &&
               goldenPoopLevel > 0 &&
@@ -564,7 +625,7 @@
     function prevQuestion() {
       if (current > 0) {
         // 10ループ後、質問2から質問1へ戻るたびに「どちらでもない」が割れていく
-        if (loopCount >= 10 && current === 1) {
+        if (loopCount >= 1 && current === 1) {
           goldenPoopLevel++;
         }
 
@@ -596,8 +657,36 @@
       return questions.some((q, i) => q.hidden && answers[i] >= 4);
     }
 
-    function finishDiagnosis() {
-      const normalAnswers = getNormalAnswers();
+function finishDiagnosis() {
+  const q = questions[current];
+
+  // 25問目の追加質問
+  if (q.balance) {
+    if (answers[current] === null) {
+      renderSage();
+      return;
+    }
+
+    if (answers[current] <= 3) {
+     renderFoodResult(
+  "うんち味のカレー",
+  `すべての要素が均衡したあと、あなたは最後の最後でうんち味のカレーを選びました。
+
+理屈ではなく、最終的な一押しがこの結果を決めました。`
+);
+      return;
+    }
+
+    renderFoodResult(
+  "カレー味のうんち",
+  `すべての要素が均衡したあと、あなたは最後の最後でカレー味のうんちを選びました。
+
+理屈ではなく、最終的な一押しがこの結果を決めました。`
+);
+    return;
+  }
+
+  const normalAnswers = getNormalAnswers();
       const allNeutral = normalAnswers.every(a => a === 3);
       const allSameNumber = normalAnswers.every(a => a === normalAnswers[0]);
 
@@ -661,14 +750,15 @@
     }
 
    function renderFoodResult(food, reason) {
+document.getElementById("siteTitle").style.display = "none";
   app.innerHTML = `
     <div class="result-label">UNTI診断結果</div>
 
-    <div class="result-main">
-      <div>あなたは</div>
-      <div>「${food}」</div>
-      <div>を食べます。</div>
-    </div>
+<div class="result-main">
+  <div class="result-prefix">あなたは</div>
+  <div class="food-result">「${food}」</div>
+  <div class="result-suffix">を食べます。</div>
+</div>
 
     <div class="reason-title">＜理由＞</div>
     <div class="reason">${reason.trim()}</div>
@@ -686,6 +776,7 @@
     }
 
     function renderSage() {
+document.getElementById("siteTitle").style.display = "none";
       app.innerHTML = `
         <div class="result-label">UNTI診断結果</div>
 
@@ -719,24 +810,30 @@
     }
 
     function showGoldenPoopResult() {
+document.getElementById("siteTitle").style.display = "none";
       app.innerHTML = `
         <div class="result-label">UNTI診断結果</div>
 
         <div class="result-main sage">
-          あなたは金のうんちを見つけました。
-        </div>
+  あなたは金のうんち<br>
+を見つけました。
+</div>
 <img class="result-golden-poop" src="golden-poop.png" alt="金のうんち">
         <div class="reason-title"></div>
         <div class="reason">
 
         </div>
 
-        <button class="restart" onclick="restart()">もう一度診断する</button>
+       <button class="restart" onclick="restart()">もう一度診断する</button>
+<button class="share" onclick="shareGoldenPoop()">Xで共有する</button>
       `;
     }
 
-    function restart() {
-      current = 0;
+function restart() {
+
+  document.getElementById("siteTitle").style.display = "block";
+
+  current = 0;
       totalQuestionNumber = 1;
       loopCount = 0;
       goldenPoopLevel = 0;
@@ -755,7 +852,11 @@
       const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
       window.open(url, "_blank");
     }
-
+function shareGoldenPoop() {
+  const text = `私はUNTI診断で「金のうんち」を見つけました。\n#UNTI診断`;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
     buildQuestions();
     renderQuestion();
   </script>
